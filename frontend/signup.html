@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    <style>
+        body { font-family: sans-serif; max-width: 400px; margin: auto; padding: 20px; }
+        input, button { width: 100%; padding: 10px; margin: 8px 0; }
+    </style>
+</head>
+<body>
+
+<h2>Signup</h2>
+
+<input id="user" placeholder="Choose username">
+<input id="pass" placeholder="Choose password" type="password">
+
+<button onclick="signup()">Create Account</button>
+
+<p>Already have an account?  
+<a href="login.html">Go to Login</a></p>
+
+<script>
+async function signup() {
+    const userName = document.getElementById("user").value;
+    const passwd = document.getElementById("pass").value;
+
+    const res = await fetch("http://localhost:5000/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userName, passwd })
+    });
+
+    const data = await res.json();
+
+    if (data.message) {
+        alert("Account created! Now login.");
+        window.location.href = "login.html";
+    } else {
+        alert("Signup failed");
+    }
+}
+</script>
+
+</body>
+</html>
