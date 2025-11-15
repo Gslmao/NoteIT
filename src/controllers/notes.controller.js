@@ -37,6 +37,17 @@ class noteCtrl{
         }
         
     }
+
+    async UpdateNote(req, res){
+        try {
+            const noteId = req.params.id;
+            const updatedNote = await editNote(noteId, req.body)
+            res.status(201).json(updatedNote);
+        } catch (err) {
+            res.status(500).json({message: err.message});
+        }
+        
+    }
 }
 
 class userMan{

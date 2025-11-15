@@ -6,6 +6,6 @@ const noteRouter = express.Router();
 noteRouter.post('/', authVerify, noteController.CreateNote);
 noteRouter.get('/fetch', authVerify, noteController.FetchNotes);
 noteRouter.delete('/:id', authVerify, isOwner, noteController.DeleteNote);
-noteRouter.put('/:id', authVerify, isOwner, noteController.FetchNotes);
+noteRouter.put('/:id', authVerify, isOwner, noteController.UpdateNote);
 
 export default noteRouter

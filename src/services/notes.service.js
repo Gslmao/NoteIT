@@ -25,3 +25,12 @@ export async function delNotes(noteId){
         throw new Error("Failed to delete the note: " + err.message);
     }
 }
+
+export async function editNote(noteId, updates){
+    try {
+        const notes = await Note.findByIdAndUpdate({ _id: noteId }, updates, { new: true, runValidators: true });
+        return notes
+    } catch (err) {
+        throw new Error("Failed to edit the note: " + err.message);
+    }
+}

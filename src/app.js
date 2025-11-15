@@ -7,6 +7,7 @@ import noteRouter from './routes/notes.routes.js'
 import authRouter from './routes/auth.routes.js'
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
