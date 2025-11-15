@@ -1,4 +1,5 @@
 import { verifyToken } from '../utils/jwt.util.js'
+import Note from '../models/note.model.js'
 
 export async function authVerify(req, res, next){
     const authHead = req.headers['authorization']
@@ -21,4 +22,24 @@ export async function authVerify(req, res, next){
     } catch (err) {
         return res.status(401).json({ message: "Invalid or expired token" });
     }
+}
+export async function isOwner(req, res, next) {
+    try{
+        const userId = req.user['userId'];
+    const noteId = req.params.id;
+
+    const resp = await Note.findById(noteId)
+    if (!resp){
+        return res.status(404).json({message: "Note Doesnt exist"})
+    }
+
+    if (resp.userId.toString() !== userId){
+        return res.status(403).json({message: "Not the owner of this note"})
+    }
+    req.own = true;
+    next();
+    } catch(err) {
+        return res.status(500).json({ message: err.message });
+    }
+    
 }

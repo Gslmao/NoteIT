@@ -17,3 +17,11 @@ export async function fetchNotes(userID){
     }
 }
 
+export async function delNotes(noteId){
+    try {
+        const notes = await Note.deleteOne({ _id: noteId });
+        return notes
+    } catch (err) {
+        throw new Error("Failed to delete the note: " + err.message);
+    }
+}

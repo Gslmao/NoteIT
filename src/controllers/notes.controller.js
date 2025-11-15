@@ -1,4 +1,4 @@
-import { createNote, fetchNotes } from '../services/notes.service.js'
+import { createNote, fetchNotes, delNotes } from '../services/notes.service.js'
 import { createUser, loginUser } from '../services/users.service.js'
 
 class noteCtrl{
@@ -19,6 +19,18 @@ class noteCtrl{
             const uID = req.user['userId'];
             const notes = await fetchNotes(uID);
             res.status(201).json(notes);
+
+        } catch (err) {
+            res.status(500).json({message: err.message});
+        }
+        
+    }
+
+    async DeleteNote(req, res){
+        try{
+            const noteId = req.params.id;
+            const notes = await delNotes(noteId);
+            res.status(201).json({message: 'OK'});
 
         } catch (err) {
             res.status(500).json({message: err.message});
