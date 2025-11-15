@@ -1,4 +1,4 @@
-import { createNote, fetchNotes, delNotes } from '../services/notes.service.js'
+import { createNote, fetchNotes, delNotes, editNote } from '../services/notes.service.js'
 import { createUser, loginUser } from '../services/users.service.js'
 
 class noteCtrl{
