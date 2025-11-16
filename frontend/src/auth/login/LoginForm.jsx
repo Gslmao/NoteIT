@@ -3,11 +3,15 @@ import { useState } from "react";
 import Input from "../../components/Input.jsx";
 import Button from "../../components/Button.jsx";
 import { useAuth } from "../../context/TokenContext.jsx"
+import { useNavigate } from "react-router-dom";
+
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const {token, setToken} = useAuth();
+  const navigate = useNavigate();
+
   async function handleLogin() {
     try {
       const res = await fetch("http://localhost:5000/api/auth/login", {
@@ -18,6 +22,8 @@ export default function LoginForm() {
 
       const data = await res.json();
       await setToken(data['message']);
+      navigate("/home");
+
     } catch (err) {
     }
   };

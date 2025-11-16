@@ -7,20 +7,32 @@ import {useAuth} from '../context/TokenContext.jsx'
 export default function NotesPage() {
   const [notes, setNotes] = useState([]);
   const [showArchived, setShowArchived] = useState(false);
-  const {token, useToken} = useAuth();
+  const {token, setToken} = useAuth();
 
-  const createNote = (title, content) => {
+  const createNote = async (title, content) => {
     const newNote = {
-      id: Date.now(),
       title,
       content,
       pinned: false,
       archived: false,
-      deleted: false
+      trash: false
     };
 
+    try {
+      const response = await fetch("http://localhost:5000/api/notes/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(newNote),
+    });
+    
     setNotes([newNote, ...notes]);
-  };
+    } catch (err) {
+      
+    }
+  }
 
   const togglePin = (id) => {
     setNotes(
