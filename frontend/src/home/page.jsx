@@ -2,10 +2,12 @@
 import { useState } from "react";
 import CreateNote from "../components/CreateNote.jsx";
 import NoteCard from "../components/NoteCard.jsx";
+import {useAuth} from '../context/TokenContext.jsx'
 
 export default function NotesPage() {
   const [notes, setNotes] = useState([]);
   const [showArchived, setShowArchived] = useState(false);
+  const {token, useToken} = useAuth();
 
   const createNote = (title, content) => {
     const newNote = {
@@ -14,6 +16,7 @@ export default function NotesPage() {
       content,
       pinned: false,
       archived: false,
+      deleted: false
     };
 
     setNotes([newNote, ...notes]);

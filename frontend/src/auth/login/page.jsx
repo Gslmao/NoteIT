@@ -1,7 +1,7 @@
 import Card from "../../components/Card.jsx";
 import LoginForm from "./LoginForm.jsx";
 
-export default function Page() {
+export default function LoginPage() {
   return (
     <div style={{
       display: "flex",

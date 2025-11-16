@@ -2,11 +2,12 @@
 import { useState } from "react";
 import Input from "../../components/Input.jsx";
 import Button from "../../components/Button.jsx";
+import { useAuth } from "../../context/TokenContext.jsx"
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const {token, setToken} = useAuth();
   async function handleLogin() {
     try {
       const res = await fetch("http://localhost:5000/api/auth/login", {
@@ -16,9 +17,8 @@ export default function LoginForm() {
       });
 
       const data = await res.json();
-      console.log(data);
+      await setToken(data['message']);
     } catch (err) {
-      console.error("Error:", err);
     }
   };
 
