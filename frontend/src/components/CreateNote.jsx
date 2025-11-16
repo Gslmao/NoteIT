@@ -75,22 +75,26 @@ const styles = {
     border: "1px solid #ddd",
     background: "#fff",
     boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    height: "200px"
   },
   titleInput: {
-    width: "100%",
+    width: "96%",
     padding: "10px",
     border: "none",
     outline: "none",
-    background:"#F7F6F3"
+    background:"#F7F6F3",
+    marginBottom: "8px",
+    borderRadius: "12px"
   },
   textArea: {
-    width: "100%",
+    width: "96%",
     padding: "10px",
     height: "100px",
     border: "none",
     outline: "none",
     resize: "none",
-    background:"#F7F6F3"
+    background:"#F7F6F3",
+    borderRadius: "8px",
   },
   closeBtn: {
     background: "#e9b303",
@@ -98,5 +102,7 @@ const styles = {
     padding: "8px 16px",
     borderRadius: "8px",
     cursor: "pointer",
+    marginTop: "8px",
+    marginRight: "4px",
   },
 };
