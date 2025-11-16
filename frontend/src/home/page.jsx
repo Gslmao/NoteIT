@@ -106,6 +106,7 @@ page: {
     alignItems: "center",
     borderBottom: "1px solid #ddd",
     paddingBottom: "1px",
+    height: "60px",
   },
   title: {
     fontSize: "30px",
@@ -118,14 +119,17 @@ page: {
     borderRadius: "10px",
     background: "#e9b303",
     cursor: "pointer",
+    border: "none",
   },
   logoutBtn: {
     cursor: "pointer",
     border: "none",
     borderRadius: "10px",
     background: "#e9b303",
-    fontSize: "15px",
-    padding: "8px 16px"
+    fontSize: "12px",
+    padding: "8px 16px",
+    marginRight: "24px",
+    marginLeft: "16px"
   },
   emptyMsg: {
     textAlign: "center",
@@ -137,5 +141,6 @@ page: {
     display: "flex",
     flexDirection: "column",
     gap: "15px",
+    
   },
 };
