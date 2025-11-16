@@ -1,21 +1,39 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CreateNote from "../components/CreateNote.jsx";
 import NoteCard from "../components/NoteCard.jsx";
 import {useAuth} from '../context/TokenContext.jsx'
+import { useNavigate } from "react-router-dom";
 
 export default function NotesPage() {
   const [notes, setNotes] = useState([]);
   const [showArchived, setShowArchived] = useState(false);
   const {token, setToken} = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  const fetchNotes = async() => {
+    const response = await fetch("http://localhost:5000/api/notes/fetch", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch notes");
+    }
+    const fetched = await response.json();
+    setNotes([...fetched])
+  }
 
   const createNote = async (title, content) => {
-    const newNote = {
+    const newNoteSend = {
       title,
-      content,
-      pinned: false,
-      archived: false,
-      trash: false
+      content
     };
 
     try {
@@ -25,9 +43,9 @@ export default function NotesPage() {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
-      body: JSON.stringify(newNote),
+      body: JSON.stringify(newNoteSend),
     });
-    
+    const newNote = await response.json();
     setNotes([newNote, ...notes]);
     } catch (err) {
       
@@ -37,22 +55,43 @@ export default function NotesPage() {
   const togglePin = (id) => {
     setNotes(
       notes.map((note) =>
-        note.id === id ? { ...note, pinned: !note.pinned } : note
+        note._id === id ? { ...note, pinned: !note.pinned } : note
       )
     );
   };
 
-  const toggleArchive = (id) => {
+  const toggleArchive = async (id) => {
+    const response = await fetch(`http://localhost:5000/api/notes/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({archived: true}),
+    });
     setNotes(
       notes.map((note) =>
-        note.id === id ? { ...note, archived: !note.archived } : note
+        note._id === id ? { ...note, archived: !note.archived } : note
       )
     );
   };
 
-  const deleteNote = (id) => {
-    setNotes(notes.filter((note) => note.id !== id));
+  const deleteNote = async (id) => {
+    const response = await fetch(`http://localhost:5000/api/notes/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    setNotes(notes.filter((note) => note._id !== id));
+
   };
+
+  const logout = () => {
+    navigate("/login")
+    setToken(null);
+  }
 
   const filteredNotes = notes.filter(
     (note) => note.archived === showArchived
@@ -76,7 +115,7 @@ export default function NotesPage() {
             {showArchived ? "Show Active" : "Show Archived"}
           </button>
 
-          <button style={styles.logoutBtn}>Logout</button>
+          <button style={styles.logoutBtn} onClick={logout}>Logout</button>
         </div>
       </div>
 
@@ -92,11 +131,11 @@ export default function NotesPage() {
       <div style={styles.notesGrid}>
         {filteredNotes.map((note) => (
           <NoteCard
-            key={note.id}
+            key={note._id}
             note={note}
-            onPin={() => togglePin(note.id)}
-            onArchive={() => toggleArchive(note.id)}
-            onDelete={() => deleteNote(note.id)}
+            onPin={() => togglePin(note._id)}
+            onArchive={() => toggleArchive(note._id)}
+            onDelete={() => deleteNote(note._id)}
           />
         ))}
       </div>
@@ -148,11 +187,10 @@ page: {
     color: "#827971",
     marginTop: "40px",
   },
-  notesGrid: {
-    marginTop: "20px",
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-    
-  },
+notesGrid: {
+  columnCount: 4,
+  columnGap: "20px",
+  padding: "20px",
+}
+
 };

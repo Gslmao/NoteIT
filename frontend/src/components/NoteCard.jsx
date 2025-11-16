@@ -16,14 +16,17 @@ export default function NoteCard({ note, onPin, onArchive, onDelete }) {
 }
 
 const styles = {
-  card: {
-    background: "#fff",
-    padding: "20px",
-    borderRadius: "12px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-    width: "500px",
-    transition: "0.2s",
-  },
+card: {
+  display: "inline-block",
+  width: "100%",
+  breakInside: "avoid",
+  padding: "20px",
+  borderRadius: "12px",
+  background: "#fff",
+  boxShadow: "0 3px 10px rgba(0,0,0,0.10)",
+  marginBottom: "20px",
+  transition: "0.15s ease",
+},
   title: {
     margin: "0 0 8px 0",
     fontWeight: "600",
@@ -37,4 +40,5 @@ const styles = {
     gap: "15px",
     marginTop: "15px",
   },
+  
 };
